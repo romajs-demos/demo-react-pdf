@@ -1,53 +1,59 @@
-import { Document, Page, pdfjs } from 'react-pdf'
-import querystring from 'querystring'
-import React from 'react'
-
-import './ReactPdfViewer.css'
+import './ReactPdfViewer.css';
+import { Document, Page, pdfjs } from 'react-pdf';
+import { range } from '../utils';
+import React from 'react';
+import weblog from 'webpack-log';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`
 
-const range = (i, n) => [...Array(n).keys()].map(_ => _ + i)
+const log = weblog({ name: 'react-pdf-viewer' })
 
 class ReactPdfViewer extends React.Component {
   state = {
+    documentLoaded: false,
     numPages: 0,
-    url: null
-  }
-
-  componentDidMount () {
-    const { search } = window.location || { search: '?url=/assets/pdf/sample.pdf' }
-    console.log('search:', search)
-
-    const params = querystring.parse(search.replace(/^\?/, ''))
-    console.log('params:', params)
-
-    const { url = '/assets/pdf/sample.pdf' } = params
-    this.setState({ url })
-  }
-
-  shouldComponentUpdate(_, nextState) {
-    const { numPages } = this.state
-    return (numPages === 0) || (numPages !== nextState.numPages) ? nextState : null
+    url: '/assets/pdf/sample.pdf'
   }
 
   onDocumentLoadSuccess = (document) => {
-    console.log('document:', document)
     const { numPages } = document
-    console.log('numPages:', numPages)
-    this.setState({ numPages })
+    log.info('numPages:', numPages)
+
+    this.setState({ numPages, documentLoaded: true })
+  }
+
+  updateUrl = (event) => {
+    log.info('event:', event)
+    this.setState({ url: event.target.value })
+  }
+
+  fetchUrl = () => {
+    log.info('fetchUrl')
+    this.setState({ numPages: 0, documentLoaded: false })
+  }
+
+  shouldComponentUpdate(_, nextState) {
+    return this.state.documentLoaded !== nextState.documentLoaded ? nextState : null
   }
 
   render () {
     const { numPages, url } = this.state
 
-    console.log('#render, url:', url)
+    log.info('#render, url:', url)
 
     if (!url) {
       return <React.Fragment />
     }
 
     return (
-      <div> 
+      <div className='react-pdf-viewer'>
+        <form className='react-pdf-viewer-form'>
+          <label for='url'>URL:</label>
+          <input type="text" name='url' value={url} onChange={this.updateUrl} />
+          <input type="button" name='fetch-url' value='Fetch' onClick={this.fetchUrl} />
+        </form>
+        <p className='react-pdf-viewer-info'>Please verify if URL input accept CORS (Access-Control-Allow-Origin: *)</p>
+        <hr/>
         <Document
           className='react-pdf-viewer-document'
           file={{ url }}
@@ -66,6 +72,7 @@ class ReactPdfViewer extends React.Component {
             </React.Fragment>
           ))}
         </Document>
+        <hr/>
         <p className='react-pdf-viewer-footer'>demo-react-pdf © 2019</p>
       </div>
     )

@@ -1,3 +1,20 @@
+.react-pdf-viewer {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.react-pdf-viewer-form {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.react-pdf-viewer-info {
+    display: flex;
+    justify-content: center;
+}
+
 .react-pdf-viewer-document {
     display: flex;
     justify-content: center;
@@ -17,4 +34,8 @@
 .react-pdf-viewer-footer {
     display: flex;
     justify-content: center;
+}
+
+hr {
+    width: 100%
 }

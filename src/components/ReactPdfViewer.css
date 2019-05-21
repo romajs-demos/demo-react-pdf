@@ -1,0 +1,20 @@
+.react-pdf-viewer-document {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.react-pdf-viewer-page {
+    display: flex;
+    justify-content: center;
+}
+
+.react-pdf-viewer-pager {
+    display: flex;
+    justify-content: center;
+}
+
+.react-pdf-viewer-footer {
+    display: flex;
+    justify-content: center;
+}

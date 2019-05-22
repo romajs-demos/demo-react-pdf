@@ -23,8 +23,9 @@ class ReactPdfViewer extends React.Component {
   }
 
   updateUrl = (event) => {
-    log.info('event:', event)
-    this.setState({ url: event.target.value })
+    const { value: url } = event.target
+    log.info('url:', url)
+    this.setState({ url, documentLoaded: false })
   }
 
   fetchUrl = () => {
@@ -41,10 +42,6 @@ class ReactPdfViewer extends React.Component {
 
     log.info('#render, url:', url)
 
-    if (!url) {
-      return <React.Fragment />
-    }
-
     return (
       <div className='react-pdf-viewer'>
         <form className='react-pdf-viewer-form'>
@@ -53,26 +50,28 @@ class ReactPdfViewer extends React.Component {
           <input type="button" name='fetch-url' value='Fetch' onClick={this.fetchUrl} />
         </form>
         <p className='react-pdf-viewer-info'>Please verify if URL input accept CORS (Access-Control-Allow-Origin: *)</p>
-        <hr/>
-        <Document
-          className='react-pdf-viewer-document'
-          file={{ url }}
-          onLoadSuccess={this.onDocumentLoadSuccess}
-          renderMode='svg'
-        >
-          {range(1, numPages).map(page => (
-            <React.Fragment>
-              <Page
-                className='react-pdf-viewer-page'
-                pageNumber={page}
-                renderMode='svg'
-                renderTextLayer={false}
-              />
-              <p className='react-pdf-viewer-pager'>Page {page} of {numPages}</p>
-            </React.Fragment>
-          ))}
-        </Document>
-        <hr/>
+        {url ? (
+          <Document
+            className='react-pdf-viewer-document'
+            file={{ url }}
+            onLoadSuccess={this.onDocumentLoadSuccess}
+            renderMode='svg'
+          >
+            {range(1, numPages).map(page => (
+              <React.Fragment>
+                <Page
+                  className='react-pdf-viewer-page'
+                  pageNumber={page}
+                  renderMode='svg'
+                  renderTextLayer={false}
+                />
+                <p className='react-pdf-viewer-pager'>Page {page} of {numPages}</p>
+              </React.Fragment>
+            ))}
+          </Document>
+        ) : (
+          <p className='react-pdf-viewer-info'>Please enter URL</p>
+        )}
         <p className='react-pdf-viewer-footer'>demo-react-pdf © 2019</p>
       </div>
     )

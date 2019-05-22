@@ -19,6 +19,8 @@
     display: flex;
     justify-content: center;
     flex-direction: column;
+    background-color: lightgray;
+    padding-top: 10px;
 }
 
 .react-pdf-viewer-page {
@@ -29,6 +31,8 @@
 .react-pdf-viewer-pager {
     display: flex;
     justify-content: center;
+    margin: 0;
+    padding: 10px 0;
 }
 
 .react-pdf-viewer-footer {

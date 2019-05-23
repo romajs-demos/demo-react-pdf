@@ -23,6 +23,29 @@
     padding-top: 10px;
 }
 
+.react-pdf-viewer-document__body{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-direction: row;
+    background-color: lightgray;
+}
+.arrow-right {
+    width: 0;
+    height: 0;
+    border-top: 24px solid transparent;
+    border-bottom: 24px solid transparent;
+    border-left: 24px solid black;
+}
+
+.arrow-left {
+    width: 0;
+    height: 0;
+    border-top: 24px solid transparent;
+    border-bottom: 24px solid transparent;
+    border-right:24px solid black;
+}
+
 .react-pdf-viewer-page {
     display: flex;
     justify-content: center;
@@ -39,6 +62,8 @@
     display: flex;
     justify-content: center;
 }
+
+
 
 hr {
     width: 100%

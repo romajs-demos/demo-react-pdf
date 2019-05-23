@@ -46,9 +46,15 @@
     border-right:24px solid black;
 }
 
-.react-pdf-viewer-page {
+.react-pdf-viewer-page,
+.react-pdf-viewer-page--rendering {
     display: flex;
     justify-content: center;
+}
+
+.react-pdf-viewer-page--rendering {
+    height: 100%;
+    background: white;
 }
 
 .react-pdf-viewer-pager {
@@ -63,7 +69,9 @@
     justify-content: center;
 }
 
-
+.hidden {
+    display: none;
+}
 
 hr {
     width: 100%

@@ -10,28 +10,41 @@ const log = weblog({name: 'react-pdf-viewer'})
 
 class PdfPage extends React.Component {
 
-  constructor(props){
+  constructor(props) {
     super(props)
-
-    log.info("props", props);
-
     this.state = {
+      isRendering: false,
       currentPage: 1
+    }
+
+    this._page = {
+      h: 0,
+      w: 0
     }
   }
 
   nextPage = () => {
     const {currentPage} = this.state;
-    this.setState({currentPage: Math.min(currentPage + 1, this.props.numPages)}, () => {
-      log.info('nextPage', this.state.currentPage)
+    this.setState({isRendering: true, currentPage: Math.min(currentPage + 1, this.props.numPages)}, () => {
     })
-
   }
 
   prevPage = () => {
     const {currentPage} = this.state;
-    this.setState({currentPage: Math.max(currentPage - 1, 1)})
+    this.setState({isRendering: true, currentPage: Math.max(currentPage - 1, 1)})
   }
+
+  onRenderSuccess = (e) => {
+    this.setState({isRendering: false});
+
+    if(!this.pageElement || !this.renderingElement) return;
+
+    this.renderingElement.style.height = `${this.pageElement.offsetHeight}px`;
+    this.renderingElement.style.width = `${this.pageElement.offsetWidth}px`;
+
+    log.info(this.pageElement.style)
+  };
+
 
   render() {
     return (
@@ -39,10 +52,14 @@ class PdfPage extends React.Component {
 
         <div className='react-pdf-viewer-document__body'>
           <div className='arrow-left' onClick={this.prevPage}/>
+          <div ref={ ref => this.renderingElement = ref} className={`react-pdf-viewer-page--rendering ${!this.state.isRendering && 'hidden'}`}/>
           <Page
-            className='react-pdf-viewer-page'
+            inputRef={ref => this.pageElement = ref}
+            className={`react-pdf-viewer-page ${this.state.isRendering && 'hidden'}`}
             pageNumber={this.state.currentPage}
             renderTextLayer={false}
+            renderAnnotationLayer={false}
+            onRenderSuccess={this.onRenderSuccess}
           />
           <div className='arrow-right' onClick={this.nextPage}/>
         </div>
@@ -58,16 +75,16 @@ class ReactPdfViewer extends React.Component {
     documentLoaded: false,
     numPages: 0,
     currentPage: 1,
-    url: '/assets/pdf/report_large_2.pdf',
     reload: true
   }
 
-  componentDidMount() {
-    pdfjs.getDocument(this.state.url).then(async (document) => {
-      const data = await document.getData();
-      log.info('data', data)
-      this.setState({pdfData: data, numPages: document.numPages})
-    })
+  constructor() {
+    super()
+    this._doc = '/assets/pdf/report_large_2.pdf'
+  }
+
+  onDocumentLoadSuccess = ({numPages, fingerprint}) => {
+    this.setState({numPages});
   }
 
   updateUrl = (event) => {
@@ -84,7 +101,7 @@ class ReactPdfViewer extends React.Component {
   render() {
     const {numPages, url, pdfData} = this.state
 
-    log.info('#render, url:', url)
+    log.info('#render, url:', this._doc);
 
     return (
       <div className='react-pdf-viewer'>
@@ -94,17 +111,14 @@ class ReactPdfViewer extends React.Component {
           <input type="button" name='fetch-url' value='Fetch' onClick={this.fetchUrl}/>
         </form>
         <p className='react-pdf-viewer-info'>Please verify if URL input accept CORS (Access-Control-Allow-Origin: *)</p>
-        {url ? (
-          <Document
-            className='react-pdf-viewer-document'
-            file={{data: pdfData}}
-            onLoadSuccess={this.onDocumentLoadSuccess}
-          >
-            <PdfPage numPages={numPages}/>
-          </Document>
-        ) : (
-          <p className='react-pdf-viewer-info'>Please enter URL</p>
-        )}
+        <Document
+          className='react-pdf-viewer-document'
+          file={this._doc}
+          onLoadSuccess={this.onDocumentLoadSuccess}
+        >
+          <PdfPage numPages={numPages}/>
+        </Document>
+
         <p className='react-pdf-viewer-footer'>demo-react-pdf © 2019</p>
       </div>
     )

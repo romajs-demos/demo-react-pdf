@@ -54,6 +54,8 @@ class ReactPdfViewer extends React.Component {
     const {numPages} = this.state;
 
     log.info('#render, url:', this._doc);
+    log.info('props:', this.props)
+    log.info('state:', this.state)
 
     return (
       <div className='react-pdf-viewer'>

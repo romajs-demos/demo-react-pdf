@@ -1,3 +1,4 @@
+import './SingleWithPaginator.css'
 import { Page } from 'react-pdf';
 import log from '../../log';
 import React, {Fragment} from 'react';
@@ -66,14 +67,14 @@ class SingleWithPaginator extends React.Component {
               ref={ref => this.renderingElement = ref}
             />
               <Page
-                inputRef={ref => this.pageElement = ref}
                 className={`react-pdf-viewer-page ${this.state.isRendering && 'hidden'}`}
-                pageNumber={this.state.currentPage}
-                renderTextLayer={false}
-                renderAnnotationLayer={false}
-                onRenderSuccess={this.onRenderSuccess}
-                width={pageWidth}
                 height={pageHeigth}
+                inputRef={ref => this.pageElement = ref}
+                onRenderSuccess={this.onRenderSuccess}
+                pageNumber={this.state.currentPage}
+                renderAnnotationLayer={false}
+                renderTextLayer={false}
+                width={pageWidth}
             />
             <div className='arrow-right' onClick={this.nextPage}/>
           </div>

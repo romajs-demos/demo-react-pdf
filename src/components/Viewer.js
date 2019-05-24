@@ -1,4 +1,4 @@
-import './ReactPdfViewer.css';
+import './Viewer.css';
 import { Document, pdfjs } from 'react-pdf';
 import log from '../log';
 import React from 'react';
@@ -27,7 +27,7 @@ const PdfOptions = [
   }
 ];
 
-class ReactPdfViewer extends React.Component {
+class Viewer extends React.Component {
   constructor () {
     super();
 
@@ -39,8 +39,10 @@ class ReactPdfViewer extends React.Component {
     };
   }
 
-  onDocumentLoadSuccess = ({ numPages, }) => {
-    this.setState({ numPages, });
+  onDocumentLoadSuccess = document => {
+    const { numPages, } = document;
+    log.info('document:', document);
+    this.setState({ numPages, }, this.props.onLoad(numPages));
   }
 
   handleDocSelect = ({ target, }) => {
@@ -73,10 +75,9 @@ class ReactPdfViewer extends React.Component {
         >
           <SingleWithPaginator numPages={numPages} />
         </Document>
-        <p className='react-pdf-viewer-footer'>demo-react-pdf © 2019</p>
       </div>
     );
   }
 }
 
-export default ReactPdfViewer;
+export default Viewer;

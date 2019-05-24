@@ -18,7 +18,14 @@
             "functions": "ignore"
         }],
       "no-console": "warn",
+      "no-unused-vars": "warn",
       "react/prop-types": "warn",
-      "semi": ["error", "always"]
+      "semi": ["error", "always"],
+      "sort-imports": ["warn", {
+          "ignoreCase": true,
+          "ignoreDeclarationSort": false,
+          "ignoreMemberSort": false,
+          "memberSyntaxSortOrder": ["none", "all", "multiple", "single"]
+      }]
   }
 }

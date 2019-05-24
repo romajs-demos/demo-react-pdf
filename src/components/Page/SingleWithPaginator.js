@@ -1,7 +1,7 @@
 import './SingleWithPaginator.css';
 import { Page } from 'react-pdf';
 import log from '../../log';
-import React, { Fragment } from 'react';
+import React from 'react';
 
 const MAX_MOBILE_SCALE = 0.7;
 
@@ -57,7 +57,7 @@ class SingleWithPaginator extends React.Component {
     render () {
       const { pageHeigth, pageWidth, } = this.state;
       return (
-        <Fragment>
+        <React.Fragment>
           <div className='react-pdf-viewer-document__body'>
             <div className='arrow-left' onClick={this.prevPage} />
             <div
@@ -77,7 +77,7 @@ class SingleWithPaginator extends React.Component {
             <div className='arrow-right' onClick={this.nextPage} />
           </div>
           <p className='react-pdf-viewer-pager'>Page {this.state.currentPage} of {this.props.numPages}</p>
-        </Fragment>
+        </React.Fragment>
       );
     }
 }

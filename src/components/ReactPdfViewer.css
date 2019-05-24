@@ -1,3 +1,9 @@
+@media only screen and (max-width: 600px) {
+    body {
+        margin: 0;
+    }
+}
+
 .react-pdf-viewer {
     display: flex;
     justify-content: center;
@@ -21,6 +27,7 @@
     flex-direction: column;
     background-color: lightgray;
     padding-top: 10px;
+    width: 100%;
 }
 
 .react-pdf-viewer-document__body{
@@ -30,12 +37,19 @@
     flex-direction: row;
     background-color: lightgray;
 }
+
 .arrow-right {
     width: 0;
     height: 0;
     border-top: 24px solid transparent;
     border-bottom: 24px solid transparent;
     border-left: 24px solid black;
+}
+
+@media only screen and (max-width: 600px) {
+    .arrow-right {
+        display: none;
+    }
 }
 
 .arrow-left {
@@ -46,10 +60,23 @@
     border-right:24px solid black;
 }
 
+@media only screen and (max-width: 600px) {
+    .arrow-left {
+        display: none;
+    }
+}
+
 .react-pdf-viewer-page,
 .react-pdf-viewer-page--rendering {
     display: flex;
     justify-content: center;
+    -webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.75);
+}
+
+
+.react-pdf-viewer-page canvas {
 }
 
 .react-pdf-viewer-page--rendering {

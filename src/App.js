@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactPdfViewer from './components/ReactPdfViewer';
 
-function App() {
+function App () {
   return (
     <ReactPdfViewer />
   );

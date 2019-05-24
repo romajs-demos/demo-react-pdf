@@ -4,58 +4,57 @@ import log from '../log';
 import React from 'react';
 import SingleWithPaginator from './Page/SingleWithPaginator';
 
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const PdfPath = '/assets/pdf';
 
 const PdfOptions = [
   {
     url: `${PdfPath}/report_light_text_only.pdf`,
-    name: 'Simple Text Document (2 pages)'
+    name: 'Simple Text Document (2 pages)',
   },
   {
     url: `${PdfPath}/report_real_world.pdf`,
-    name: 'Test Exam (1 page)'
+    name: 'Test Exam (1 page)',
   },
   {
     url: `${PdfPath}/report_medium.pdf`,
-    name: 'Images and Texts (9 pages)'
+    name: 'Images and Texts (9 pages)',
   },
   {
     url: `${PdfPath}/report_huge.pdf`,
-    name: 'Huge Document (98 pages)'
+    name: 'Huge Document (98 pages)',
   }
 ];
 
 class ReactPdfViewer extends React.Component {
+  constructor () {
+    super();
 
-  constructor() {
-    super()
-
-    const initialDoc = PdfOptions[0].url
-    this._doc = initialDoc
+    const initialDoc = PdfOptions[0].url;
+    this._doc = initialDoc;
     this.state = {
       numPages: 0,
-      selectedDoc: initialDoc
-    }
+      selectedDoc: initialDoc,
+    };
   }
 
-  onDocumentLoadSuccess = ({numPages}) => {
-    this.setState({numPages});
+  onDocumentLoadSuccess = ({ numPages, }) => {
+    this.setState({ numPages, });
   }
 
-  handleDocSelect = ({target}) => {
+  handleDocSelect = ({ target, }) => {
     const pdfUrl = target.value;
     this._doc = pdfUrl;
-    this.setState({selectedDoc: pdfUrl})
+    this.setState({ selectedDoc: pdfUrl, });
   }
 
-  render() {
-    const {numPages} = this.state;
+  render () {
+    const { numPages, } = this.state;
 
     log.info('#render, url:', this._doc);
-    log.info('props:', this.props)
-    log.info('state:', this.state)
+    log.info('props:', this.props);
+    log.info('state:', this.state);
 
     return (
       <div className='react-pdf-viewer'>
@@ -72,12 +71,12 @@ class ReactPdfViewer extends React.Component {
           file={this._doc}
           onLoadSuccess={this.onDocumentLoadSuccess}
         >
-          <SingleWithPaginator numPages={numPages}/>
+          <SingleWithPaginator numPages={numPages} />
         </Document>
         <p className='react-pdf-viewer-footer'>demo-react-pdf © 2019</p>
       </div>
-    )
+    );
   }
 }
 
-export default ReactPdfViewer
+export default ReactPdfViewer;

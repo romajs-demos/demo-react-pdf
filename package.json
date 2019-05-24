@@ -2,24 +2,9 @@
   "name": "demo-react-pdf",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "querystring": "^0.2.0",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
-    "react-pdf": "^4.0.5",
-    "react-scripts": "3.0.1",
-    "webpack-log": "^2.0.0"
-  },
-  "scripts": {
-    "deploy": "now -n demo-react-pdf -Q build",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
+  "pre-commit": [
+    "lint"
+  ],
   "browserslist": {
     "production": [
       ">0.2%",
@@ -32,7 +17,38 @@
       "last 1 safari version"
     ]
   },
+  "scripts": {
+    "build": "react-scripts build",
+    "deploy": "now -n demo-react-pdf -Q build",
+    "eject": "react-scripts eject",
+    "lint:watch": "npm run lint -- --watch",
+    "lint": "esw src --color --fix",
+    "start": "react-scripts start",
+    "test:ci": "cross-env CI=true npm test",
+    "test": "react-scripts test"
+  },
+  "dependencies": {
+    "@material-ui/core": "^4.0.0",
+    "@material-ui/icons": "^4.0.0",
+    "prop-types": "^15.7.2",
+    "querystring": "^0.2.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-pdf": "^4.0.5",
+    "react-scripts": "3.0.1",
+    "styled-components": "^4.2.0",
+    "webpack-log": "^2.0.0"
+  },
   "devDependencies": {
-    "now": "^15.3.0"
+    "eslint-config-standard": "^12.0.0",
+    "eslint-config-standard-react": "^7.0.2",
+    "eslint-plugin-import": "^2.17.2",
+    "eslint-plugin-node": "^9.1.0",
+    "eslint-plugin-promise": "^4.1.1",
+    "eslint-plugin-react": "^7.13.0",
+    "eslint-plugin-standard": "^4.0.0",
+    "eslint-watch": "^5.1.2",
+    "now": "^15.3.0",
+    "pre-commit": "^1.2.2"
   }
 }

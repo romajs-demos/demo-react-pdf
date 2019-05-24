@@ -1,0 +1,24 @@
+{
+  "extends": [
+      "standard",
+      "standard-react"
+  ],
+  "env": {
+      "es6": true,
+      "browser": true,
+      "jest": true
+  },
+  "parser": "babel-eslint",
+  "rules": {
+        "comma-dangle": ["error", {
+            "arrays": "never",
+            "objects": "always",
+            "imports": "never",
+            "exports": "never",
+            "functions": "ignore"
+        }],
+      "no-console": "warn",
+      "react/prop-types": "warn",
+      "semi": ["error", "always"]
+  }
+}

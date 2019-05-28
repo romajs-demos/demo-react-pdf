@@ -20,7 +20,7 @@ const styles = {
   },
 };
 
-const Navbar = ({ classes, title, toggleSidebar, }) => (
+const Navbar = ({ classes, title, toggleSidebar }) => (
   <div className={classes.root}>
     <AppBar position='static'>
       <Toolbar>

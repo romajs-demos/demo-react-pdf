@@ -1,0 +1,17 @@
+.all-pages-vertical-scroll__page {
+    display: flex;
+    justify-content: center;
+}
+
+.all-pages-vertical-scroll__page canvas {
+    -webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.75);
+}
+
+.all-pages-vertical-scroll__pager {
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    padding: 10px 0;
+}

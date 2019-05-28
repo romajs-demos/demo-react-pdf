@@ -1,0 +1,8 @@
+.demo-react-pdf__viewer__document {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    background-color: lightgray;
+    padding-top: 10px;
+    width: 100%;
+}

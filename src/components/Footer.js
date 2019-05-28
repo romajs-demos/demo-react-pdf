@@ -2,7 +2,7 @@ import './Footer.css';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const Footer = ({ children, }) => (
+const Footer = ({ children }) => (
   <div className='footer'>
     {children}
   </div>

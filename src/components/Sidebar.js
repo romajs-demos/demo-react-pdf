@@ -12,7 +12,7 @@ const styles = {
   },
 };
 
-export const Sidebar = ({ classes, showSidebar, toggleSidebar, }) => (
+export const Sidebar = ({ classes, showSidebar, toggleSidebar }) => (
   <Drawer open={showSidebar} onClose={() => toggleSidebar(false)}>
     <div role='button' onClick={() => toggleSidebar(false)}>
       <div className={classes.list} />

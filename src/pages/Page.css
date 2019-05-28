@@ -1,0 +1,11 @@
+.demo-react-pdf__content {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.demo-react-pdf__form {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+}

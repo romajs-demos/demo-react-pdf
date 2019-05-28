@@ -19,7 +19,7 @@
   },
   "scripts": {
     "build": "react-scripts build",
-    "deploy": "now -n demo-react-pdf -Q build",
+    "deploy": "now -n demo-react-pdf build",
     "eject": "react-scripts eject",
     "lint:watch": "npm run lint -- --watch",
     "lint": "esw src --color --fix",

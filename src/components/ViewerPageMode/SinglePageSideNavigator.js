@@ -5,12 +5,24 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 const MAX_MOBILE_SCALE = 0.7;
+const MIN_HEIGTH_MARGIN_PX = 120;
+const MIN_WIDTH_MARGIN_PX = 10;
 
 const getPageDimensions = () => {
   const pageScale = window.outerWidth / window.outerHeight;
+
+  let pageHeigth = null;
+  let pageWidth = null;
+
+  if (pageScale > 1) {
+    pageHeigth = window.outerHeight - MIN_HEIGTH_MARGIN_PX;
+  } else if (pageScale <= MAX_MOBILE_SCALE) {
+    pageWidth = window.outerWidth - MIN_WIDTH_MARGIN_PX;
+  }
+
   return {
-    pageHeigth: null,
-    pageWidth: MAX_MOBILE_SCALE > pageScale ? window.outerWidth - 10 : null,
+    pageHeigth,
+    pageWidth,
     pageScale,
   };
 };

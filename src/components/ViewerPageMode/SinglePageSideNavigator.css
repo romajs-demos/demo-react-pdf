@@ -30,7 +30,7 @@
     border-left:24px solid gray;
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 479px) {
     .single-page-side-navigator__arrow--right {
         display: none;
     }
@@ -52,7 +52,7 @@
     border-right:24px solid gray;
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 479px) {
     .single-page-side-navigator__arrow--left {
         display: none;
     }

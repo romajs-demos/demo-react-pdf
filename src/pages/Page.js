@@ -9,7 +9,7 @@ class Page extends React.Component {
 
   state = {
     numPages: 0,
-    url: PdfOptions[2].url,
+    url: PdfOptions[3].url,
   };
 
   handleDocSelect = ({ target }) => {

@@ -1,7 +1,6 @@
-
 import './AllPagesVerticalScrollOptmized.css';
 import { Page } from 'react-pdf';
-import { range } from '../../utils';
+import { range } from 'range';
 import logger from '../../logger';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -10,74 +9,141 @@ import debounce from 'lodash.debounce';
 class AllPagesVerticalScrollOptmized extends React.Component {
   log = logger(this.constructor.name)
 
-  boundaries = []
-
-  blankRefs = []
+  rects = []
 
   state = {
     isRendering: false,
+    // page: {
+    //   height: 800,
+    //   width: 400,
+    // },
+    pages: [],
     show: [],
   }
 
   updateShow = debounce(() => {
-    const { pageYOffset: topOffset, innerHeight } = window;
-    const bottomOffset = topOffset + innerHeight;
+    const { page: { height: pageHeight } } = this.state;
+    const { pageYOffset, innerHeight } = window;
 
-    console.log('scroll:', { topOffset, bottomOffset });
+    const offsetFit = Math.max(pageHeight - innerHeight, 0);
+    const wo = pageYOffset - offsetFit - (pageHeight * 1);
+    const wi = pageYOffset + innerHeight + offsetFit + (pageHeight * 1);
 
-    const show = this.boundaries.map(({ pageIndex, ...boundary }) => ({
-      pageIndex,
-      show: bottomOffset > boundary.top && topOffset < boundary.bottom,
-    }));
+    console.log('---------------------------------------------------');
+    console.log('scrollTo:', { offsetFit, pageHeight, pageYOffset, wo, wi });
 
-    console.log(show);
+    // const show = this.rects.map(({ index, offsetBottom, offsetTop }) => ({
+    //   index,
+    //   offsetBottom,
+    //   offsetTop,
+    //   show: pageOffsetBprevStateprevStateottom > offsetTop && pageOffsetTop < offsetBottom,
+    // }));
 
-    this.setState({ show });
+    // console.log('show:');
+
+    // show.forEach(s => console.log(s));
+
+    this.setState(prevState => ({
+      pages: prevState.pages.map(({ pageNumber }, index) => {
+        const { offsetTop: po, offsetBottom: pi } = this.rects[index];
+
+        const topRule = po > wo && po < wi;
+        const bottomRule = pi > wo && pi < wi;
+
+        const show = topRule || bottomRule;
+        // console.log({ pageNumber, show });
+
+        return {
+          pageNumber,
+          show,
+          page: { po, pi },
+          window: { wo, wi },
+          offsetFit,
+          topRule: `${wo} < ${po} < ${wi} = ${topRule}`,
+          bottomRule: `${wo} < ${pi} < ${wi} = ${bottomRule}`,
+        };
+      }),
+    }), () => {
+      const showingPages = this.state.pages.filter(page => page.show).map(page => page.pageNumber);
+      console.log('showingPages:', showingPages.join(', '));
+    });
   }, 100);
 
   componentDidMount () {
-    this.updateShow();
+    // this.updateShow();
     window.addEventListener('scroll', this.updateShow);
   }
 
-  onLoadSuccess = pageIndex => page => {
-    const { pageNumber, height, width } = page;
-    const object = { pageNumber, height, width };
+  componentDidUpdate () {
+    // this.pages = range(2, this.props.numPages + 1).map(pageNumber => ({
+    //   blankRef: React.createRef(),
+    //   pageNumber,
+    // }));
+  }
 
-    const blankRef = this.blankRefs[pageIndex];
+  componentWillReceiveProps (nextProps) {
+    this.setState({ pages: range(1, nextProps.numPages + 1).map(pageNumber => ({
+      isFirst: pageNumber === 1,
+      pageNumber,
+      show: false,
+    })) }, () => {
+      this.updatedRects();
+      this.updateShow();
+    });
+  }
 
-    blankRef.style.height = `${height}px`;
-    blankRef.style.width = `${width}px`;
+  updatedRects = () => {
+    this.rects = [ ...document.getElementsByClassName('apvso__page-blank') ]
+      .map(({ offsetHeight, offsetTop }, index) => ({ index, offsetTop, offsetBottom: offsetHeight + offsetTop }));
+    // .map(blank => blank.getBoundingClientRect())
+    // .map(({ top: offsetTop, bottom: offsetBottom }, index) => ({ index, offsetTop, offsetBottom }));
+    console.log('rects:');
+    this.rects.forEach(rect => console.log(rect));
+  }
 
-    const { bottom, top } = blankRef.getBoundingClientRect();
-    this.boundaries.push({ bottom, pageIndex, top });
-
-    console.log('onLoadSuccess', !!blankRef, { bottom, top });
+  onPageLoadSuccess = isFirst => page => {
+    const { height, width } = page;
+    if (isFirst) {
+      this.setState({ page: { height, width } }, () => {
+        this.updatedRects();
+        this.updateShow();
+      });
+    }
   }
 
   render () {
     const { numPages } = this.props;
-    const { isRendering, show } = this.state;
+    const { isRendering, pages, page, show } = this.state;
+
+    const blankStyle = page ? {
+      height: `${page.height}px`,
+      width: `${page.width}px`,
+    } : {};
+
+    // pages.forEach(page => console.log(page));
+
     return (
       <div className='apvso__pages'>
-        {range(1, numPages).map((pageNumber, pageIndex) => (
+        {pages.map(({ isFirst, pageNumber, show, ...page }) => (
           <div className='apvso__page' key={pageNumber}>
             <div
-              className={`apvso__page-blank`}
-              ref={ref => this.blankRefs.push(ref)}
+              className={`apvso__page-blank ${show ? 'hidden' : ''}`}
+              // className={`apvso__page-blank`}
+              style={blankStyle}
             >
-              <p>pageIndex: {pageIndex}</p>
-              <p>show: {JSON.stringify(show.find(s => s.pageIndex === pageIndex))}</p>
+              {/* <pre>
+                {JSON.stringify({ pageNumber, show, ...page }, null, 2)}
+              </pre> */}
             </div>
-            <Page
-              className={`apvso__page-content hidden ${isRendering && 'hidden'}`}
-              // inputRef={ref => (this.pageElement = ref)}
-              // onRenderSuccess={this.onRenderSuccess}
-              onLoadSuccess={this.onLoadSuccess(pageIndex)}
-              pageNumber={pageNumber}
-              renderTextLayer={false}
-              renderAnnotationLayer={false}
-            />
+            {(isFirst || show) && (
+              <Page
+                className={`apvso__page-content`}
+                onLoadSuccess={this.onPageLoadSuccess(isFirst)}
+                pageNumber={pageNumber}
+                renderTextLayer={false}
+                renderAnnotationLayer={false}
+              />
+            )}
             {/* <p className='apvso__pager'>Page {page} of {numPages}</p> */}
           </div>
         ))}

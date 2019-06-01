@@ -4,6 +4,8 @@ import logger from '../logger';
 import PropTypes from 'prop-types';
 import React from 'react';
 import SinglePageSideNavigator from './ViewerPageMode/SinglePageSideNavigator';
+import AllPagesVerticalScroll from './ViewerPageMode/AllPagesVerticalScroll';
+import AllPagesVerticalScrollOptmized from './ViewerPageMode/AllPagesVerticalScrollOptmized';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -32,7 +34,7 @@ class PdfViewer extends React.Component {
         file={url}
         onLoadSuccess={this.onDocumentLoadSuccess}
       >
-        <SinglePageSideNavigator numPages={numPages} />
+        <AllPagesVerticalScrollOptmized numPages={numPages} />
       </Document>
     );
   }

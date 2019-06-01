@@ -1,0 +1,29 @@
+.apvso__pages {
+    padding: 10px 0;
+}
+
+.apvso__page {
+    -webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.75);
+    margin: 10px 0;
+    /* align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: center; */
+}
+
+.apvso__page-blank {
+    background: white;
+    height: 100%;
+}
+
+.apvso__page-content {
+}
+
+.apvso__pager {
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    padding: 10px 0;
+}

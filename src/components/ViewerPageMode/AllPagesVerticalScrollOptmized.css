@@ -2,7 +2,7 @@
     padding: 10px 0;
 }
 
-.apvso__page {
+.apvso__page-container {
     -webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.75);
     -moz-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.75);
     box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.75);
@@ -11,15 +11,7 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-}
-
-.apvso__page-blank {
     background: white;
-    height: 100%;
-    float: left;
-}
-
-.apvso__page-content {
 }
 
 .apvso__pager {

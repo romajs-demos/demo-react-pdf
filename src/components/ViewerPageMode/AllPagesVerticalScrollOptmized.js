@@ -93,7 +93,7 @@ class AllPagesVerticalScrollOptmized extends React.Component {
   }
 
   updatedRects = () => {
-    this.rects = [ ...document.getElementsByClassName('apvso__page-blank') ]
+    this.rects = [ ...document.getElementsByClassName('apvso__page-container') ]
       .map(({ offsetHeight, offsetTop }, index) => ({ index, offsetTop, offsetBottom: offsetHeight + offsetTop }));
     // .map(blank => blank.getBoundingClientRect())
     // .map(({ top: offsetTop, bottom: offsetBottom }, index) => ({ index, offsetTop, offsetBottom }));
@@ -115,7 +115,7 @@ class AllPagesVerticalScrollOptmized extends React.Component {
     const { numPages } = this.props;
     const { isRendering, pages, page, show } = this.state;
 
-    const blankStyle = page ? {
+    const pageStyle = page ? {
       height: `${page.height}px`,
       width: `${page.width}px`,
     } : {};
@@ -125,19 +125,10 @@ class AllPagesVerticalScrollOptmized extends React.Component {
     return (
       <div className='apvso__pages'>
         {pages.map(({ isFirst, pageNumber, show, ...page }) => (
-          <div className='apvso__page' key={pageNumber}>
-            <div
-              className={`apvso__page-blank ${show ? 'hidden' : ''}`}
-              // className={`apvso__page-blank`}
-              style={blankStyle}
-            >
-              {/* <pre>
-                {JSON.stringify({ pageNumber, show, ...page }, null, 2)}
-              </pre> */}
-            </div>
+          <div className='apvso__page-container' key={pageNumber} style={pageStyle}>
             {(isFirst || show) && (
               <Page
-                className={`apvso__page-content`}
+                className={`apvso__page`}
                 onLoadSuccess={this.onPageLoadSuccess(isFirst)}
                 pageNumber={pageNumber}
                 renderTextLayer={false}
